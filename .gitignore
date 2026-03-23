@@ -1,0 +1,19 @@
+# Środowisko wirtualne
+.venv/
+venv/
+env/
+
+# Pliki Pythona
+__pycache__/
+*.pyc
+
+# Klucze
+.env
+
+# Pliki edytora PyCharm
+.idea/
+.vscode/
+
+# Pliki systemowe
+.DS_Store
+Thumbs.db
