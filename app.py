@@ -1,5 +1,5 @@
 import streamlit as st
-from catching_info import get_btc_price, get_btc_news
+from catching_info import get_btc_price, get_btc_news, get_price_change_since_last_close, get_percentage_price_change_since_last_close
 import time
 
 st.set_page_config(
@@ -24,18 +24,40 @@ left_col, right_col = st.columns([1, 1], gap='large')
 with left_col:
     st.subheader('Price')
     price_box = st.empty()
+    diff_box = st.empty()
+    percentage_diff = st.empty()
 
 with right_col:
     st.subheader('News')
     right_box = st.empty()
 
+
 while True:
     btc_price = get_btc_price()
+    diff = get_price_change_since_last_close()
     price_box.markdown(
         f"""
         <h2 style='font-size:48px;'>
-            {btc_price}
+            {f'{btc_price:.0f} USD'}
         </h2>
+        """,
+        unsafe_allow_html=True
+    )
+
+    diff_box.markdown(
+        f"""
+        <h3 style='font-size:30px;'>
+            {diff:.0f}
+        </h3>
+        """,
+        unsafe_allow_html=True
+    )
+
+    percentage_diff.markdown(
+        f"""
+        <h3 style='font-size:30px;'>
+            {f'{get_percentage_price_change_since_last_close():.2f}%'}
+        </h3>
         """,
         unsafe_allow_html=True
     )
@@ -43,7 +65,7 @@ while True:
     news = get_btc_news()
     right_box.write(news if news else 'brak newsow')
 
-    time.sleep(10)
+    time.sleep(1)
 
 
 

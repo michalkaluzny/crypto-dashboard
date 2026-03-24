@@ -14,6 +14,33 @@ def get_btc_price():
         return data["Close"].iloc[-1]
     return data
 
+def get_price_change_since_last_close():
+    '''
+    It takes the current Bitcoin price and the previous close price of Bitcoin
+    and calculates the difference.
+
+    :return: float: the difference between the current and previous closing price of Bitcoin.
+    '''
+    current_price = get_btc_price()
+    btc = yf.Ticker("BTC-USD")
+    prev_close_price = btc.fast_info.get('previousClose')
+    diff = current_price - prev_close_price
+    return diff
+
+def get_percentage_price_change_since_last_close():
+    '''
+    Shows the difference between the current price and the previous close price of bitcoin in percentage.
+
+    :return: float: the difference between the current price and the previous close price of bitcoin in percentage.
+    '''
+    diff = get_price_change_since_last_close()
+    btc = yf.Ticker("BTC-USD")
+    prev_close_price = btc.fast_info.get('previousClose')
+    percentage_diff = (diff / prev_close_price) * 100
+    return percentage_diff
+
+
+
 def get_btc_news(count : int = 1):
     '''
     Gets the 3 latest bitcoin news headlines.
