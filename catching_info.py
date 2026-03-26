@@ -51,18 +51,14 @@ def get_btc_news(count : int = 1):
     btc = yf.Ticker("BTC-USD")
 
     news = btc.get_news(count=count)
-    results = {}
+    results =  []
     for i, new in enumerate(news[:count]):
         url = new["content"]['canonicalUrl']['url']
         title = new['content']['title']
         pub_date = new["content"]['pubDate']
         summary = new["content"]['summary']
         pub_date = change_date_type(pub_date)
-        results[pub_date] = {
-            "title": title,
-            "url": url,
-            'summary': summary
-        }
+        results.append([pub_date, {'title': title, 'summary' : summary, 'url' : url}])
     return results
 
 def change_date_type(date):
@@ -75,3 +71,5 @@ def change_date_type(date):
     date_utc = datetime.fromisoformat(date.replace('Z', '+00:00'))
     changed_date = date_utc.strftime('%d.%m.%Y %H:%M:%S')
     return changed_date
+
+
