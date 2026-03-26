@@ -1,6 +1,7 @@
 import streamlit as st
 from catching_info import get_btc_price, get_btc_news, get_price_change_since_last_close, get_percentage_price_change_since_last_close
 import time
+from datetime import datetime
 
 st.set_page_config(
     page_title='Bitcoin RAG Dashboard',
@@ -62,8 +63,14 @@ while True:
         unsafe_allow_html=True
     )
 
-    news = get_btc_news()
-    right_box.write(news if news else 'brak newsow')
+    news = get_btc_news(50)
+
+    news_text = "\n\n".join([f'***{pub_date}*** - {item['title']} \n - {item['summary']}' for pub_date, item in sorted(
+        news.items(),
+        key=lambda x: datetime.strptime(x[0], '%d.%m.%Y %H:%M:%S'),
+        reverse=True
+    )])
+    right_box.markdown(news_text)
 
     time.sleep(1)
 
