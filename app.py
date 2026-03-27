@@ -69,6 +69,11 @@ percentage_diff.markdown(
 
 st.markdown("""
     <style>
+    .news-scroll-box {
+        max-height: 600px;
+        overflow-y: auto;
+        padding-right: 8px;
+    }
     .news-title-link,
     .news-title-link:visited,
     .news-title-link:active,
@@ -83,6 +88,7 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
+
 @st.cache_data(ttl=300)
 def get_btc_news_cached(n):
     return get_btc_news(n)
@@ -95,28 +101,22 @@ for pub_date, item in sorted(
     key=lambda x: datetime.strptime(x[0], '%d.%m.%Y %H:%M:%S'),
     reverse=True,
 ):
-    news_html += f"""
-    <div style="
-        border: 2px solid #4F8BF9;
-        border-radius: 18px;
-        padding: 18px 22px 14px 22px;
-        margin-bottom: 18px;
-        background: #f8f9fa;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        position: relative;
-    ">
-        <div style="display: flex; justify-content: space-between; align-items: baseline;">
-            <span style="font-size: 1.5em; font-weight: bold; color: #222;">
-                <a href='{item['url']}' class='news-title-link'>{item['title']}</a>
-            </span>
-            <span style="font-size: 0.95em; color: #888; margin-left: 16px;">{pub_date}</span>
-        </div>
-        <div style="margin-top: 10px; font-size: 1.08em; color: #444;">
-            {item['summary']}
-        </div>
-    </div>
-    """
-right_box.markdown(news_html, unsafe_allow_html=True)
+    news_html += (
+        f"<div style=\"border: 2px solid #4F8BF9; border-radius: 18px; padding: 18px 22px 14px 22px; margin-bottom: 18px; background: #f8f9fa; box-shadow: 0 2px 8px rgba(0,0,0,0.05); position: relative;\">"
+        f"<div style=\"display: flex; justify-content: space-between; align-items: baseline;\">"
+        f"<span style=\"font-size: 1.5em; font-weight: bold;\">"
+        f"<a href='{item['url']}' class='news-title-link'>{item['title']}</a>"
+        f"</span>"
+        f"<span style=\"font-size: 0.95em; color: #888; margin-left: 16px;\">{pub_date}</span>"
+        f"</div>"
+        f"<div style=\"margin-top: 10px; font-size: 1.08em; color: #444;\">"
+        f"{item['summary']}"
+        f"</div>"
+        f"</div>"
+    )
+right_box.markdown( f"<div class='news-scroll-box'>{news_html}</div>",
+                            unsafe_allow_html=True
+                    )
 
 @st.cache_data(ttl=60)
 def get_close_price_history_cached():
@@ -146,15 +146,15 @@ fig.update_traces(
 )
 
 chart_box.plotly_chart(fig,
-                       config={
-                            'scrollZoom' : False,
-                            'displayModeBar': True,
-                            'doubleClick': 'reset',
-                            'modeBarButtonsToRemove': [
-                                'zoom2d', 'zoomIn2d', 'zoomOut2d', 'autoScale2d', 'resetScale2d', 'pan2d'
-                            ]
-                       }
-                )
+       config={
+            'scrollZoom' : False,
+            'displayModeBar': True,
+            'doubleClick': 'reset',
+            'modeBarButtonsToRemove': [
+                'zoom2d', 'zoomIn2d', 'zoomOut2d', 'autoScale2d', 'resetScale2d', 'pan2d'
+            ]
+       }
+)
 
 
 
