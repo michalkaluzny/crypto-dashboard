@@ -71,14 +71,32 @@ def get_btc_news_cached(n):
 
 news = get_btc_news_cached(50)
 
-news_text = "\n\n".join([
-    f"***{pub_date}*** - {item['title']} \n - {item['summary']}"
-    for pub_date, item in sorted(
+news_html = ""
+for pub_date, item in sorted(
     news,
     key=lambda x: datetime.strptime(x[0], '%d.%m.%Y %H:%M:%S'),
-    reverse=True
-)])
-right_box.markdown(news_text)
+    reverse=True,
+):
+    news_html += f"""
+    <div style="
+        border: 2px solid #4F8BF9;
+        border-radius: 18px;
+        padding: 18px 22px 14px 22px;
+        margin-bottom: 18px;
+        background: #f8f9fa;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        position: relative;
+    ">
+        <div style="display: flex; justify-content: space-between; align-items: baseline;">
+            <span style="font-size: 1.5em; font-weight: bold; color: #222;">{item['title']}</span>
+            <span style="font-size: 0.95em; color: #888; margin-left: 16px;">{pub_date}</span>
+        </div>
+        <div style="margin-top: 10px; font-size: 1.08em; color: #444;">
+            {item['summary']}
+        </div>
+    </div>
+    """
+right_box.markdown(news_html, unsafe_allow_html=True)
 
 
 
