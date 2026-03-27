@@ -1,5 +1,5 @@
 import streamlit as st
-from catching_info import get_btc_price, get_btc_news, get_price_change_since_last_close, get_percentage_price_change_since_last_close
+from catching_info import get_btc_price, get_btc_news, get_price_change_since_last_close, get_percentage_price_change_since_last_close, get_close_price_history
 import time
 from datetime import datetime
 
@@ -29,6 +29,7 @@ with left_col:
     price_box = st.empty()
     diff_box = st.empty()
     percentage_diff = st.empty()
+    chart_box = st.empty()
 
 with right_col:
     st.subheader('News')
@@ -97,6 +98,12 @@ for pub_date, item in sorted(
     </div>
     """
 right_box.markdown(news_html, unsafe_allow_html=True)
+
+@st.cache_data(ttl=60)
+def get_close_price_history_cached():
+    return get_close_price_history()
+
+chart_box.line_chart(get_close_price_history_cached())
 
 
 

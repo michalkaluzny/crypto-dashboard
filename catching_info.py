@@ -14,6 +14,16 @@ def get_btc_price():
         return data["Close"].iloc[-1]
     return data
 
+def get_close_price_history():
+    '''
+    Gets the historical price data from the Yahoo Finance API.
+
+    :return: pandas.Series: Historical price data.
+    '''
+    btc = yf.Ticker("BTC-USD")
+    hist = btc.history(period="1d", interval="1m")
+    return hist['Close']
+
 def get_price_change_since_last_close():
     '''
     It takes the current Bitcoin price and the previous close price of Bitcoin
