@@ -1,7 +1,8 @@
 import streamlit as st
 from catching_info import get_btc_price, get_btc_news, get_price_change_since_last_close, get_percentage_price_change_since_last_close, get_close_price_history
-import time
 from datetime import datetime
+import plotly.express as px
+
 
 st.set_page_config(
     page_title='Bitcoin RAG Dashboard',
@@ -103,7 +104,40 @@ right_box.markdown(news_html, unsafe_allow_html=True)
 def get_close_price_history_cached():
     return get_close_price_history()
 
-chart_box.line_chart(get_close_price_history_cached())
+hist = get_close_price_history_cached()
+fig = px.line(hist)
+fig.update_layout(
+    hovermode='x',
+    dragmode=False,
+    xaxis_title=None,
+    yaxis_title=None,
+    showlegend=False,
+    xaxis=dict(
+        showspikes=True,
+        spikecolor="#4F8BF9",
+        spikethickness=2,
+        spikedash='solid',
+        spikemode='across'
+    ),
+    yaxis=dict(
+        showspikes=False
+    )
+)
+fig.update_traces(
+    hovertemplate="<b>Data:</b> %{x}<br><b>Cena:</b> %{y:.2f} USD"
+)
+
+chart_box.plotly_chart(fig,
+                       config={
+                            'scrollZoom' : False,
+                            'displayModeBar': True,
+                            'doubleClick': 'reset',
+                            'modeBarButtonsToRemove': [
+                                'zoom2d', 'zoomIn2d', 'zoomOut2d', 'autoScale2d', 'resetScale2d', 'pan2d'
+                            ]
+                       }
+                )
+
 
 
 
