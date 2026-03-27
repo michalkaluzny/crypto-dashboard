@@ -65,16 +65,20 @@ percentage_diff.markdown(
     unsafe_allow_html=True
 )
 
-news = get_btc_news(50)
+@st.cache_data(ttl=300)
+def get_btc_news_cached(n):
+    return get_btc_news(n)
 
-news_text = "\n\n".join([f'***{pub_date}*** - {item['title']} \n - {item['summary']}' for pub_date, item in sorted(
+news = get_btc_news_cached(50)
+
+news_text = "\n\n".join([
+    f"***{pub_date}*** - {item['title']} \n - {item['summary']}"
+    for pub_date, item in sorted(
     news,
     key=lambda x: datetime.strptime(x[0], '%d.%m.%Y %H:%M:%S'),
     reverse=True
 )])
 right_box.markdown(news_text)
-
-time.sleep(1)
 
 
 
