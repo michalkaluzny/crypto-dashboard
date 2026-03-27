@@ -67,6 +67,22 @@ percentage_diff.markdown(
     unsafe_allow_html=True
 )
 
+st.markdown("""
+    <style>
+    .news-title-link,
+    .news-title-link:visited,
+    .news-title-link:active,
+    .news-title-link:focus {
+        color: #4F8BF9 !important;
+        text-decoration: none !important;
+        transition: color 0.2s;
+    }
+    .news-title-link:hover {
+        color: #222 !important;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
 @st.cache_data(ttl=300)
 def get_btc_news_cached(n):
     return get_btc_news(n)
@@ -90,7 +106,9 @@ for pub_date, item in sorted(
         position: relative;
     ">
         <div style="display: flex; justify-content: space-between; align-items: baseline;">
-            <span style="font-size: 1.5em; font-weight: bold; color: #222;">{item['title']}</span>
+            <span style="font-size: 1.5em; font-weight: bold; color: #222;">
+                <a href='{item['url']}' class='news-title-link'>{item['title']}</a>
+            </span>
             <span style="font-size: 0.95em; color: #888; margin-left: 16px;">{pub_date}</span>
         </div>
         <div style="margin-top: 10px; font-size: 1.08em; color: #444;">
