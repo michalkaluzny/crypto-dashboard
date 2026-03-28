@@ -52,7 +52,7 @@ price_box.markdown(
 diff_box.markdown(
     f"""
     <h3 style='font-size:30px;'>
-        {f'difference {diff:.0f}'}
+        {f'difference: {diff:.0f}'}
     </h3>
     """,
     unsafe_allow_html=True
@@ -119,10 +119,27 @@ right_box.markdown( f"<div class='news-scroll-box'>{news_html}</div>",
                     )
 
 @st.cache_data(ttl=60)
-def get_close_price_history_cached():
-    return get_close_price_history()
+def get_close_price_history_cached(period, interval):
+    return get_close_price_history(period, interval)
 
-hist = get_close_price_history_cached()
+period = st.radio(
+    "Choose a period: ",
+    options=['1d', '5d', '1mo', '6mo', '1y', '5y', '10y', 'max'],
+    format_func=lambda x: {'1d': '1 day', '5d': '5 days', '1mo': '1 months', '6mo' : '6 months', '1y' : '1 years', '5y' : '5 years', '10y' : '10 years', 'max' : 'all time'}[x],
+    horizontal=True
+)
+
+if period == '1d': interval = '1m'
+elif period == '5d': interval = '1m'
+elif period == '1mo': interval = '15m'
+elif period == '6mo' : interval = '1h'
+elif period == '1y' : interval = '1d'
+elif period == '5y' : interval = '1wk'
+elif period == '10y' : interval = '1mo'
+elif period == 'max' : interval = '1mo'
+
+
+hist = get_close_price_history_cached(period, interval)
 fig = px.line(hist)
 fig.update_layout(
     hovermode='x',
@@ -155,6 +172,8 @@ chart_box.plotly_chart(fig,
             ]
        }
 )
+
+
 
 
 
