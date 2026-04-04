@@ -19,8 +19,7 @@ class News(BaseModel):
     summary: str
     pub_date:str
 
-class NewsResponse(BaseModel):
-    news : List[News]
+
 
 
 
