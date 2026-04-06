@@ -41,10 +41,19 @@ function PriceCard() {
 
   return (
     <div className="price-card">
-      <h2 className="price-label">Price:</h2>
-      <p className="price-value">
-        {priceData.price.toLocaleString('en-US', { maximumFractionDigits: 0 })} USD
-      </p>
+      <div className="price-header">
+        <img
+          src="https://assets.coingecko.com/coins/images/1/large/bitcoin.png"
+          alt="Bitcoin logo"
+          className="btc-logo"
+        />
+        <div className="price-info">
+          <h2 className="price-label">Price:</h2>
+          <p className="price-value">
+            {priceData.price.toLocaleString('en-US', { maximumFractionDigits: 0 })} USD
+          </p>
+        </div>
+      </div>
       <p className="price-diff" style={{ color: diffColor }}>
         difference: {diffSign}{priceData.diff.toFixed(0)} USD
       </p>
