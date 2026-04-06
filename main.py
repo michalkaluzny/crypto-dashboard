@@ -47,8 +47,8 @@ def read_news():
     ]
 
 @app.get("/price_history", response_model=PriceHistory)
-def read_price_history():
-    price_history = get_close_price_history('1d', '1m')
+def read_price_history(period: str = '1d', interval: str = '1m'):
+    price_history = get_close_price_history(period, interval)
     return PriceHistory(
         timestamps = [str(ts) for ts in price_history.index],
         prices = price_history.values.tolist(),
