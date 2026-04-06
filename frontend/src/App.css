@@ -64,8 +64,7 @@ body {
 
 /* ============ SECTION ============ */
 .section {
-  max-width: 1200px;
-  margin: 0 auto;
+  width: 100%;
 }
 
 .section-content {
@@ -183,6 +182,27 @@ body {
 
 .chart-error {
   color: #ef4444;
+}
+
+/* Chart Tooltip */
+.chart-tooltip {
+  background: #fff;
+  border: 1px solid #4F8BF9;
+  border-radius: 8px;
+  padding: 10px 14px;
+}
+
+.tooltip-price {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0 0 4px 0;
+}
+
+.tooltip-date {
+  font-size: 0.9rem;
+  color: #666;
+  margin: 0;
 }
 
 /* ============ NEWS LIST ============ */

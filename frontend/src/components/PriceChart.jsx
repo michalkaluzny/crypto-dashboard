@@ -21,7 +21,7 @@ const PERIOD_CONFIG = {
   max: { interval: '1mo', label: 'all time' },
 };
 
-// Formatowanie daty zależne od okresu
+// Formatowanie daty zależne od okresu (dla osi X)
 function formatDate(dateStr, period) {
   const date = new Date(dateStr);
 
@@ -34,6 +34,29 @@ function formatDate(dateStr, period) {
     return date.toLocaleDateString('pl-PL', { day: '2-digit', month: 'short' });
   } else {
     return date.toLocaleDateString('pl-PL', { month: 'short', year: '2-digit' });
+  }
+}
+
+// Formatowanie daty dla tooltipa
+function formatTooltipDate(dateStr, period) {
+  const date = new Date(dateStr);
+
+  // Dla 1d, 5d, 1mo, 6mo - pokazuj datę z godziną
+  if (period === '1d' || period === '5d' || period === '1mo' || period === '6mo') {
+    return date.toLocaleString('pl-PL', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+  } else {
+    // Dla 1y, 5y, 10y, max - tylko dzień, miesiąc, rok
+    return date.toLocaleDateString('pl-PL', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+    });
   }
 }
 
@@ -89,12 +112,16 @@ function PriceChart() {
               width={80}
             />
             <Tooltip
-              formatter={(value) => [`${value.toFixed(2)} USD`, 'Cena']}
-              labelFormatter={(label) => `Data: ${label}`}
-              contentStyle={{
-                background: '#fff',
-                border: '1px solid #4F8BF9',
-                borderRadius: '8px',
+              content={({ active, payload, label }) => {
+                if (active && payload && payload.length) {
+                  return (
+                    <div className="chart-tooltip">
+                      <p className="tooltip-price">{payload[0].value.toFixed(2)} USD</p>
+                      <p className="tooltip-date">{formatTooltipDate(label, period)}</p>
+                    </div>
+                  );
+                }
+                return null;
               }}
             />
             <Line
