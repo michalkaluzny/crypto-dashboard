@@ -49,17 +49,19 @@ function PriceCard() {
         />
         <div className="price-info">
           <h2 className="price-label">Price:</h2>
-          <p className="price-value">
-            {priceData.price.toLocaleString('en-US', { maximumFractionDigits: 0 })} USD
-          </p>
+          <div className="price-row">
+            <p className="price-value">
+              {priceData.price.toLocaleString('en-US', { maximumFractionDigits: 0 })} USD
+            </p>
+            <span className="price-diff" style={{ color: diffColor }}>
+              {diffSign}{priceData.diff.toFixed(0)} USD
+            </span>
+            <span className="price-percent" style={{ color: diffColor }}>
+              ({diffSign}{priceData.percentage_diff.toFixed(2)}%)
+            </span>
+          </div>
         </div>
       </div>
-      <p className="price-diff" style={{ color: diffColor }}>
-        difference: {diffSign}{priceData.diff.toFixed(0)} USD
-      </p>
-      <p className="price-percent" style={{ color: diffColor }}>
-        difference in %: {diffSign}{priceData.percentage_diff.toFixed(2)}%
-      </p>
     </div>
   );
 }

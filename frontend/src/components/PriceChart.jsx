@@ -66,19 +66,6 @@ function PriceChart() {
 
   return (
     <div className="chart-container">
-      {/* Przyciski wyboru okresu */}
-      <div className="period-selector">
-        <span className="period-label">Choose a period:</span>
-        {Object.entries(PERIOD_CONFIG).map(([key, config]) => (
-          <button
-            key={key}
-            className={`period-btn ${period === key ? 'active' : ''}`}
-            onClick={() => setPeriod(key)}
-          >
-            {config.label}
-          </button>
-        ))}
-      </div>
 
       {/* Wykres */}
       {error ? (
@@ -121,6 +108,19 @@ function PriceChart() {
           </LineChart>
         </ResponsiveContainer>
       )}
+
+      {/* Przyciski wyboru okresu - pod wykresem */}
+      <div className="period-selector">
+        {Object.entries(PERIOD_CONFIG).map(([key, config]) => (
+          <button
+            key={key}
+            className={`period-btn ${period === key ? 'active' : ''}`}
+            onClick={() => setPeriod(key)}
+          >
+            {config.label}
+          </button>
+        ))}
+      </div>
     </div>
   );
 }
