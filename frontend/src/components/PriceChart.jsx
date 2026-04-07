@@ -105,6 +105,7 @@ function PriceChart() {
               interval="preserveStartEnd"
             />
             <YAxis
+              orientation="right"
               domain={['auto', 'auto']}
               tickFormatter={(value) =>
                 `$${value.toLocaleString('en-US', { maximumFractionDigits: 0 })}`
@@ -129,7 +130,47 @@ function PriceChart() {
               dataKey="price"
               stroke="#4F8BF9"
               strokeWidth={2}
-              dot={false}
+              dot={(props) => {
+                // Pokaż kropkę tylko na ostatnim punkcie (real-time)
+                const { index, cx, cy, payload } = props;
+                if (index === data.length - 1) {
+                  const price = payload.price;
+                  const priceText = `$${price.toLocaleString('en-US', { maximumFractionDigits: 0 })}`;
+                  return (
+                    <g key={`dot-${index}`}>
+                      {/* Kropka */}
+                      <circle
+                        cx={cx}
+                        cy={cy}
+                        r={6}
+                        fill="#4F8BF9"
+                        stroke="#fff"
+                        strokeWidth={2}
+                      />
+                      {/* Kwadracik z ceną */}
+                      <rect
+                        x={cx + 10}
+                        y={cy - 12}
+                        width={70}
+                        height={24}
+                        rx={4}
+                        fill="#4F8BF9"
+                      />
+                      <text
+                        x={cx + 45}
+                        y={cy + 4}
+                        textAnchor="middle"
+                        fill="#fff"
+                        fontSize={12}
+                        fontWeight="bold"
+                      >
+                        {priceText}
+                      </text>
+                    </g>
+                  );
+                }
+                return null;
+              }}
               activeDot={{ r: 6, fill: '#4F8BF9' }}
             />
           </LineChart>
