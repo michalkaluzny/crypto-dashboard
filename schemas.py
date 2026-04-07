@@ -22,8 +22,8 @@ class News(BaseModel):
 class ScrapedArticle(BaseModel):
     url: str
     title: str
-    pub_date: str
     ai_summary : str | None = None
+    content: str
 
 
 
