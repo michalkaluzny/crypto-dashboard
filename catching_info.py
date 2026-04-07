@@ -7,12 +7,16 @@ def get_btc_price():
 
     :return: float: Actual Bitcoin price.
     '''
-    btc = yf.Ticker("BTC-USD")
-    data = btc.fast_info.get('lastPrice')
-    if data is None:
-        data = btc.history(period="1d", interval="1m")
-        return data["Close"].iloc[-1]
-    return data
+    try:
+        btc = yf.Ticker("BTC-USD")
+        data = btc.fast_info.get('lastPrice')
+        if data is None:
+            data = btc.history(period="1d", interval="1m")
+            return data["Close"].iloc[-1]
+        return data
+    except Exception as e:
+        print(f"Error fetching BTC price: {e}")
+        raise
 
 def get_close_price_history(period, interval):
     '''
@@ -20,9 +24,13 @@ def get_close_price_history(period, interval):
 
     :return: pandas.Series: Historical price data.
     '''
-    btc = yf.Ticker("BTC-USD")
-    hist = btc.history(period=period, interval=interval)
-    return hist['Close']
+    try:
+        btc = yf.Ticker("BTC-USD")
+        hist = btc.history(period=period, interval=interval)
+        return hist['Close']
+    except Exception as e:
+        print(f"Error fetching BTC price history: {e}")
+        raise
 
 def get_price_change_since_last_close():
     '''
@@ -31,11 +39,15 @@ def get_price_change_since_last_close():
 
     :return: float: the difference between the current and previous closing price of Bitcoin.
     '''
-    current_price = get_btc_price()
-    btc = yf.Ticker("BTC-USD")
-    prev_close_price = btc.fast_info.get('previousClose')
-    diff = current_price - prev_close_price
-    return diff
+    try:
+        current_price = get_btc_price()
+        btc = yf.Ticker("BTC-USD")
+        prev_close_price = btc.fast_info.get('previousClose')
+        diff = current_price - prev_close_price
+        return diff
+    except Exception as e:
+        print(f"Error fetching Bitcoin price difference: {e}")
+        raise
 
 def get_percentage_price_change_since_last_close():
     '''
@@ -43,11 +55,15 @@ def get_percentage_price_change_since_last_close():
 
     :return: float: the difference between the current price and the previous close price of bitcoin in percentage.
     '''
-    diff = get_price_change_since_last_close()
-    btc = yf.Ticker("BTC-USD")
-    prev_close_price = btc.fast_info.get('previousClose')
-    percentage_diff = (diff / prev_close_price) * 100
-    return percentage_diff
+    try:
+        diff = get_price_change_since_last_close()
+        btc = yf.Ticker("BTC-USD")
+        prev_close_price = btc.fast_info.get('previousClose')
+        percentage_diff = (diff / prev_close_price) * 100
+        return percentage_diff
+    except Exception as e:
+        print(f"Error fetching Bitcoin percentage price difference: {e}")
+        raise
 
 
 
@@ -58,18 +74,22 @@ def get_btc_news(count : int = 1):
     :param count: int: Number of news to get.
     :return: As many news items as given in the count along with the publication date.
     '''
-    btc = yf.Ticker("BTC-USD")
+    try:
+        btc = yf.Ticker("BTC-USD")
 
-    news = btc.get_news(count=count)
-    results =  []
-    for i, new in enumerate(news[:count]):
-        url = new["content"]['canonicalUrl']['url']
-        title = new['content']['title']
-        pub_date = new["content"]['pubDate']
-        summary = new["content"]['summary']
-        pub_date = change_date_type(pub_date)
-        results.append([pub_date, {'title': title, 'summary' : summary, 'url' : url}])
-    return results
+        news = btc.get_news(count=count)
+        results =  []
+        for i, new in enumerate(news[:count]):
+            url = new["content"]['canonicalUrl']['url']
+            title = new['content']['title']
+            pub_date = new["content"]['pubDate']
+            summary = new["content"]['summary']
+            pub_date = change_date_type(pub_date)
+            results.append([pub_date, {'title': title, 'summary' : summary, 'url' : url}])
+        return results
+    except Exception as e:
+        print(f"Error fetching news: {e}")
+        raise
 
 def change_date_type(date):
     """
@@ -78,8 +98,12 @@ def change_date_type(date):
     :param date: str: Date string in ISO format (e.g., from Yahoo Finance).
     :return: str: Formatted date string as 'DD.MM.YYYY HH:MM:SS'.
     """
-    date_utc = datetime.fromisoformat(date.replace('Z', '+00:00'))
-    changed_date = date_utc.strftime('%d.%m.%Y %H:%M:%S')
-    return changed_date
+    try:
+        date_utc = datetime.fromisoformat(date.replace('Z', '+00:00'))
+        changed_date = date_utc.strftime('%d.%m.%Y %H:%M:%S')
+        return changed_date
+    except Exception as e:
+        print(f"Error converting date: {e}")
+        raise
 
 

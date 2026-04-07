@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from schemas import Price, News, PriceHistory, ScrapedArticle
+from schemas import Price, News, PriceHistory
 from catching_info import(
     get_btc_price,
     get_btc_news,
