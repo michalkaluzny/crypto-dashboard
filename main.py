@@ -56,22 +56,3 @@ def read_price_history(period: str = '1d', interval: str = '1m'):
         timestamps = [str(ts) for ts in price_history.index],
         prices = price_history.values.tolist(),
     )
-
-@app.get("/scrape", response_model=ScrapedArticle)
-def scrape_article(url:str):
-    response = requests.get(url, headers={"User-Agent": "Mozilla/5.0"})
-    soup = BeautifulSoup(response.text, "html.parser")
-
-    title = soup.find("h1").get_text() if soup.find('h1') else ""
-    paragraphs = soup.find_all("p")
-    content = " ".join([p.get_text() for p in paragraphs])
-
-    #here will be ai mechanism
-    #ai function
-
-    return{
-        "title": title,
-        "content": content[:2000],
-        "url": url,
-        "ai_summary" : None
-    }

@@ -19,11 +19,6 @@ class News(BaseModel):
     summary: str
     pub_date:str
 
-class ScrapedArticle(BaseModel):
-    url: str
-    title: str
-    ai_summary : str | None = None
-    content: str
 
 
 
