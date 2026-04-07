@@ -51,7 +51,7 @@ function PriceCard() {
           <h2 className="price-label">Price:</h2>
           <div className="price-row">
             <p className="price-value">
-              {priceData.price.toLocaleString('en-US', { maximumFractionDigits: 0 })} USD
+              {priceData.price.toLocaleString('en-US', { maximumFractionDigits: 0 })} <span className="currency-label">USD</span>
             </p>
             <span className="price-diff" style={{ color: diffColor }}>
               {diffSign}{priceData.diff.toFixed(0)} USD

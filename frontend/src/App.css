@@ -122,6 +122,11 @@ body {
   margin: 0;
 }
 
+.currency-label {
+  font-size: 24px;
+  font-weight: normal;
+}
+
 .price-diff {
   font-size: 1.2rem;
   font-weight: 600;

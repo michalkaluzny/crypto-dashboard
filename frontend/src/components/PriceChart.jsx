@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { fetchPriceHistory } from '../api/client';
 import {
-  LineChart,
-  Line,
+  AreaChart,
+  Area,
   XAxis,
   YAxis,
   Tooltip,
@@ -97,7 +97,13 @@ function PriceChart() {
         <div className="chart-loading">Ładowanie wykresu...</div>
       ) : (
         <ResponsiveContainer width="100%" height={400}>
-          <LineChart data={data}>
+          <AreaChart data={data}>
+            <defs>
+              <linearGradient id="blueGradient" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#4F8BF9" stopOpacity={0.3} />
+                <stop offset="100%" stopColor="#4F8BF9" stopOpacity={0} />
+              </linearGradient>
+            </defs>
             <XAxis
               dataKey="date"
               tick={{ fontSize: 12 }}
@@ -125,11 +131,12 @@ function PriceChart() {
                 return null;
               }}
             />
-            <Line
+            <Area
               type="monotone"
               dataKey="price"
               stroke="#4F8BF9"
               strokeWidth={2}
+              fill="url(#blueGradient)"
               dot={(props) => {
                 // Pokaż kropkę tylko na ostatnim punkcie (real-time)
                 const { index, cx, cy, payload } = props;
@@ -173,7 +180,7 @@ function PriceChart() {
               }}
               activeDot={{ r: 6, fill: '#4F8BF9' }}
             />
-          </LineChart>
+          </AreaChart>
         </ResponsiveContainer>
       )}
 
