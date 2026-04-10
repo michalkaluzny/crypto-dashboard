@@ -3,6 +3,7 @@ import './App.css';
 import PriceCard from './components/PriceCard';
 import NewsList from './components/NewsList';
 import PriceChart from './components/PriceChart';
+import Chatbot from './components/Chatbot';
 
 function App() {
   const [activeTab, setActiveTab] = useState('chart');
@@ -28,6 +29,12 @@ function App() {
         >
           📰 News
         </button>
+        <button
+          className={`tab-btn ${activeTab === 'chatbot' ? 'active' : ''}`}
+          onClick={() => setActiveTab('chatbot')}
+        >
+          🤖 Chatbot
+        </button>
       </nav>
 
       {/* Sekcje */}
@@ -37,6 +44,7 @@ function App() {
         <div className="section-content">
           {activeTab === 'chart' && <PriceChart />}
           {activeTab === 'news' && <NewsList />}
+          {activeTab === 'chatbot' && <Chatbot />}
         </div>
       </div>
     </div>
