@@ -48,29 +48,119 @@ function Chatbot() {
   };
 
   return (
-    <div style={{ maxWidth: 500, margin: "0 auto", padding: 16, border: "1px solid #ddd", borderRadius: 8, background: "#fafcff" }}>
-      <h2>Chatbot AI</h2>
-      <div style={{ minHeight: 180, marginBottom: 12, overflowY: "auto", background: "#fff", border: "1px solid #eee", borderRadius: 4, padding: 8 }}>
-        {messages.length === 0 && <div style={{ color: "#888" }}>Zadaj pytanie dotyczące kryptowalut…</div>}
+    <div
+      style={{
+        maxWidth: 700,
+        margin: "32px auto 0 auto",
+        padding: 24,
+        border: "2px solid #1976d2",
+        borderRadius: 16,
+        background: "#f7faff",
+        boxShadow: "0 4px 24px 0 rgba(25, 118, 210, 0.08)",
+        minHeight: 420,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "stretch"
+      }}
+    >
+      <h2 style={{
+        color: "#1976d2",
+        fontWeight: 700,
+        fontSize: 28,
+        marginBottom: 18,
+        letterSpacing: 1
+      }}>Chatbot AI</h2>
+      <div
+        style={{
+          minHeight: 220,
+          marginBottom: 18,
+          overflowY: "auto",
+          background: "#fff",
+          border: "1.5px solid #e3eafc",
+          borderRadius: 10,
+          padding: 14,
+          boxShadow: "0 2px 8px 0 rgba(25, 118, 210, 0.04)"
+        }}
+      >
+        {messages.length === 0 && (
+          <div style={{ color: "#90a4ae", fontStyle: "italic" }}>
+            Zadaj pytanie dotyczące kryptowalut…
+          </div>
+        )}
         {messages.map((msg, idx) => (
-          <div key={idx} style={{ textAlign: msg.role === "user" ? "right" : "left", margin: "8px 0" }}>
-            <span style={{ fontWeight: "bold", color: msg.role === "user" ? "#1976d2" : "#009688" }}>
+          <div
+            key={idx}
+            style={{
+              textAlign: msg.role === "user" ? "right" : "left",
+              margin: "12px 0",
+              display: "flex",
+              flexDirection: msg.role === "user" ? "row-reverse" : "row",
+              alignItems: "flex-end"
+            }}
+          >
+            <span
+              style={{
+                fontWeight: 600,
+                color: msg.role === "user" ? "#1976d2" : "#009688",
+                margin: msg.role === "user" ? "0 0 0 8px" : "0 8px 0 0",
+                fontSize: 15
+              }}
+            >
               {msg.role === "user" ? "Ty" : "AI"}:
-            </span> {msg.content}
+            </span>
+            <span
+              style={{
+                background: msg.role === "user" ? "#e3eafc" : "#e0f7fa",
+                color: "#222",
+                borderRadius: 8,
+                padding: "8px 14px",
+                maxWidth: 420,
+                wordBreak: "break-word",
+                fontSize: 16,
+                boxShadow: msg.role === "user"
+                  ? "0 1px 4px 0 rgba(25, 118, 210, 0.06)"
+                  : "0 1px 4px 0 rgba(0, 150, 136, 0.06)"
+              }}
+            >
+              {msg.content}
+            </span>
           </div>
         ))}
       </div>
-      <div style={{ display: "flex", gap: 8 }}>
+      <div style={{ display: "flex", gap: 12 }}>
         <input
           type="text"
           value={input}
           onChange={e => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder="Wpisz wiadomość..."
-          style={{ flex: 1, padding: 8, borderRadius: 4, border: "1px solid #ccc" }}
+          style={{
+            flex: 1,
+            padding: "12px 16px",
+            borderRadius: 8,
+            border: "1.5px solid #b6c7e3",
+            fontSize: 16,
+            outline: "none",
+            background: "#fafdff"
+          }}
           disabled={loading}
         />
-        <button onClick={sendMessage} disabled={loading || !input.trim()} style={{ padding: "8px 16px", borderRadius: 4, background: "#1976d2", color: "#fff", border: "none" }}>
+        <button
+          onClick={sendMessage}
+          disabled={loading || !input.trim()}
+          style={{
+            padding: "12px 28px",
+            borderRadius: 8,
+            background: loading || !input.trim() ? "#b6c7e3" : "#1976d2",
+            color: "#fff",
+            border: "none",
+            fontWeight: 700,
+            fontSize: 16,
+            letterSpacing: 1,
+            cursor: loading || !input.trim() ? "not-allowed" : "pointer",
+            transition: "background 0.2s"
+          }}
+        >
           Wyślij
         </button>
       </div>
