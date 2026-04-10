@@ -19,6 +19,12 @@ class News(BaseModel):
     summary: str
     pub_date:str
 
+class ChatRequest(BaseModel):
+    text : str
+
+class ChatBot(BaseModel):
+    user_input: str
+    answer: str
 
 
 
