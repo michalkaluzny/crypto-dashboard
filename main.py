@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from schemas import Price, News, PriceHistory
+from schemas import Price, News, PriceHistory, ChatBot
 from catching_info import(
     get_btc_price,
     get_btc_news,
@@ -9,9 +9,8 @@ from catching_info import(
     get_percentage_price_change_since_last_close,
 )
 from typing import List
+from chatbot import get_ai_response
 
-from bs4 import BeautifulSoup
-import requests
 
 app = FastAPI()
 
@@ -65,3 +64,10 @@ def read_price_history(period: str = '1d', interval: str = '1m'):
         )
     except Exception as e:
         raise HTTPException(status_code=503, detail=f"Could not fetch price history: {str(e)}")
+
+@app.get('/chatbot', response_model=ChatBot)
+def read_chatbot(text : str):
+    return ChatBot(
+        user_input=text,
+        answer= get_ai_response(text)
+    )
