@@ -60,17 +60,17 @@ function formatTooltipDate(dateStr, period) {
   }
 }
 
+
 function PriceChart() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [period, setPeriod] = useState('1d');
   const [error, setError] = useState(null);
 
-  // Pobierz dane gdy zmieni się okres
-  useEffect(() => {
+  // Funkcja do pobierania pełnych danych wykresu
+  const loadChartData = () => {
     setLoading(true);
     const { interval } = PERIOD_CONFIG[period];
-
     fetchPriceHistory(period, interval)
       .then((response) => {
         const chartData = response.data.timestamps.map((timestamp, index) => ({
@@ -85,7 +85,48 @@ function PriceChart() {
         console.error(err);
       })
       .finally(() => setLoading(false));
+  };
+
+  // Funkcja do pobierania tylko najnowszego punktu
+  const fetchLatestPoint = () => {
+    const { interval } = PERIOD_CONFIG[period];
+    fetchPriceHistory(period, interval)
+      .then((response) => {
+        const timestamps = response.data.timestamps;
+        const prices = response.data.prices;
+        if (!timestamps || !prices || timestamps.length === 0) return;
+        const lastTimestamp = timestamps[timestamps.length - 1];
+        const lastPrice = prices[prices.length - 1];
+        // Jeśli nie ma jeszcze żadnych danych, nie rób nic
+        if (data.length === 0) return;
+        // Jeśli nowy punkt ma inny timestamp niż ostatni na wykresie, dodaj go
+        if (lastTimestamp !== data[data.length - 1].date) {
+          setData((prevData) => [
+            ...prevData,
+            { date: lastTimestamp, price: lastPrice },
+          ]);
+        }
+      })
+      .catch((err) => {
+        // Nie pokazuj błędu na UI, bo to tylko dopytywanie
+        console.error('Błąd przy dopytywaniu najnowszego punktu:', err);
+      });
+  };
+
+  // Pobierz dane przy zmianie okresu
+  useEffect(() => {
+    loadChartData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [period]);
+
+  // Co 10 sekund dopytuj o najnowszy punkt i dorysuj, jeśli jest nowy
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      fetchLatestPoint();
+    }, 10000); // 10 sekund
+    return () => clearInterval(intervalId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [period, data]);
 
   return (
     <div className="chart-container">

@@ -23,7 +23,7 @@ function PriceCard() {
     loadPrice();
 
     // Odświeżanie co 60 sekund
-    const interval = setInterval(loadPrice, 60000);
+    const interval = setInterval(loadPrice, 10000);
     return () => clearInterval(interval);
   }, []);
 
