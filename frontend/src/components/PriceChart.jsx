@@ -12,9 +12,9 @@ import {
 // Mapowanie period → interval (tak jak w Streamlit)
 const PERIOD_CONFIG = {
   '1d': { interval: '1m', label: '1 day' },
-  '5d': { interval: '1m', label: '5 days' },
-  '1mo': { interval: '15m', label: '1 month' },
-  '6mo': { interval: '1h', label: '6 months' },
+  '5d': { interval: '15m', label: '5 days' },
+  '1mo': { interval: '1h', label: '1 month' },
+  '6mo': { interval: '1d', label: '6 months' },
   '1y': { interval: '1d', label: '1 year' },
   '5y': { interval: '1wk', label: '5 years' },
   '10y': { interval: '1mo', label: '10 years' },
