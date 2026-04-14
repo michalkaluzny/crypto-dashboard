@@ -10,9 +10,9 @@ function App() {
 
   return (
     <div className="dashboard">
-      <h1 className="dashboard-title">Bitcoin RAG Dashboard</h1>
+      <h1 className="dashboard-title">Crypto Dashboard</h1>
       <h2 className="dashboard-subtitle">
-        Bitcoin news and currency analysis panel
+        Crypto news and currency analysis panel
       </h2>
 
       {/* Nawigacja */}
