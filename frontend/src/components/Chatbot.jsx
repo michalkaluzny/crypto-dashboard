@@ -29,7 +29,7 @@ function Chatbot() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ text: input }),
       });
-      if (!res.ok) throw new Error("Błąd serwera");
+      if (!res.ok) throw new Error("Serwer error");
       const data = await res.json();
       setMessages((msgs) => [
         ...msgs,
@@ -38,7 +38,7 @@ function Chatbot() {
     } catch (e) {
       setMessages((msgs) => [
         ...msgs,
-        { role: "ai", content: "Wystąpił błąd podczas komunikacji z AI." }
+        { role: "ai", content: "An error occurred while communicating with the AI." }
       ]);
     }
     setInput("");
@@ -57,7 +57,7 @@ function Chatbot() {
       <div className="chatbot-modern-messages">
         {messages.length === 0 && (
           <div className="chatbot-modern-placeholder">
-            Zadaj pytanie dotyczące kryptowalut…
+            Ask a question about cryptocurrencies…
           </div>
         )}
         {messages.map((msg, idx) => (
@@ -84,7 +84,7 @@ function Chatbot() {
             </div>
             <div className="chatbot-modern-bubble chatbot-modern-loading">
               <span className="chatbot-modern-spinner"></span>
-              <span style={{ marginLeft: 10 }}>AI pisze…</span>
+              <span style={{ marginLeft: 10 }}>AI responds...</span>
             </div>
           </div>
         )}
@@ -96,7 +96,7 @@ function Chatbot() {
           value={input}
           onChange={e => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
-          placeholder="Wpisz wiadomość..."
+          placeholder="Enter your message..."
           className="chatbot-modern-input"
           disabled={loading}
         />
@@ -105,7 +105,7 @@ function Chatbot() {
           disabled={loading || !input.trim()}
           className="chatbot-modern-send"
         >
-          Wyślij
+          Send
         </button>
       </div>
     </div>

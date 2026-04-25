@@ -13,7 +13,7 @@ function PriceCard() {
         setPriceData(response.data);
         setError(null);
       } catch (err) {
-        setError('Nie udało się pobrać ceny');
+        setError('Failed to retrieve price');
         console.error(err);
       } finally {
         setLoading(false);
@@ -27,7 +27,7 @@ function PriceCard() {
   }, []);
 
   if (loading) {
-    return <div className="price-card">Ładowanie...</div>;
+    return <div className="price-card">Loading...</div>;
   }
 
   if (error) {

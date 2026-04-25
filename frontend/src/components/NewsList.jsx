@@ -26,14 +26,14 @@ function NewsList() {
         setError(null);
       })
       .catch((err) => {
-        setError('Nie udało się pobrać wiadomości');
+        setError('Failed to download news');
         console.error(err);
       })
       .finally(() => setLoading(false));
   }, []);
 
   if (loading) {
-    return <div className="news-list">Ładowanie wiadomości...</div>;
+    return <div className="news-list">Loading news...</div>;
   }
 
   if (error) {
