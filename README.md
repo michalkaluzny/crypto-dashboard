@@ -86,7 +86,7 @@ The app will be available at (by default): [http://localhost:5173](http://localh
 - **Market news**
   ![News](images/AppScreenNews.png)
 - **Chatbot interface**
-  ![Chatbot](images/AppScreenChatBot.png)
+  ![Chatbot](images/AppScreenChatBotNew.png)
 
 ---
 
