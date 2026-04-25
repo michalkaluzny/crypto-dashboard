@@ -92,7 +92,7 @@ The app will be available at (by default): [http://localhost:5173](http://localh
 
 ## 📝 License
 
-No explicit license specified. If you want to use this project, please contact the author.
+Distributed under the MIT License. See `LICENSE` for more information.
 
 ---
 
