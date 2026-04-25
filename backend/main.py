@@ -29,6 +29,11 @@ app.add_middleware(
 
 @app.get("/price", response_model=Price)
 def read_price():
+    """
+    Gets actual BTC price, difference between the current price and the previous close price
+
+    :return: object Price with actual price, difference and percentage difference
+    """
     try:
         return Price(
             price=get_btc_price(),
@@ -40,6 +45,11 @@ def read_price():
 
 @app.get("/news", response_model=List[News])
 def read_news():
+    """
+    Gets a list of news articles from the Yahoo Finance API
+
+    :return: object News with title, url summary and pub date
+    """
     try:
         raw_news = get_btc_news(20)
         return[
@@ -56,6 +66,13 @@ def read_news():
 
 @app.get("/price_history", response_model=PriceHistory)
 def read_price_history(period: str = '1d', interval: str = '1m'):
+    """
+    Gets historical price data from the Yahoo Finance API
+
+    :param period: the period in which we will see price changes
+    :param interval: time interval of the charged price
+    :return: object PriceHistory with timestamps and prices
+    """
     try:
         price_history = get_close_price_history(period, interval)
         return PriceHistory(
@@ -68,6 +85,12 @@ def read_price_history(period: str = '1d', interval: str = '1m'):
 
 @app.post("/chatbot", response_model=ChatBot)
 def read_chatbot(request: ChatRequest):
+    """
+    Endpoint which gets chatbot response
+
+    :param request: object with user text
+    :return: object ChatBot with user text and chatbot response
+    """
     return ChatBot(
         user_input = request.text,
         answer = get_ai_response(request.text)

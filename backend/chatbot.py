@@ -4,6 +4,12 @@ import os
 
 client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
 def get_ai_response(text : str) -> str:
+    """
+    Gets the AI's response
+
+    :param text: text to be analyzed
+    :return: AI response
+    """
     messages = [
             {"role": "system", "content": "Jesteś ekspertem od kryptowalut i technologii blockchain. Odpowiadaj po polsku, "
                                           "jasno i zwięźle, tłumacząc nawet trudne pojęcia w prosty sposób. Podawaj aktualne "
