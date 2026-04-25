@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { fetchNews } from '../api/client';
 import NewsCard from './NewsCard';
 
-// Helper do parsowania daty w formacie DD.MM.YYYY HH:MM:SS
 function parseDate(dateStr) {
   const [datePart, timePart] = dateStr.split(' ');
   const [day, month, year] = datePart.split('.');
@@ -18,7 +17,6 @@ function NewsList() {
   useEffect(() => {
     fetchNews()
       .then((response) => {
-        // Sortowanie po dacie (najnowsze pierwsze) - jak w Streamlit
         const sorted = [...response.data].sort((a, b) => {
           const dateA = parseDate(a.pub_date);
           const dateB = parseDate(b.pub_date);

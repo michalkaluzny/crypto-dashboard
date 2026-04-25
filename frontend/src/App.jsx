@@ -15,7 +15,7 @@ function App() {
         Crypto news and currency analysis panel
       </h2>
 
-      {/* Nawigacja */}
+      {/* Navigation */}
       <nav className="tabs">
         <button
           className={`tab-btn ${activeTab === 'chart' ? 'active' : ''}`}
@@ -37,7 +37,7 @@ function App() {
         </button>
       </nav>
 
-      {/* Sekcje */}
+      {/* Sections */}
       <div className="section">
         <PriceCard />
 

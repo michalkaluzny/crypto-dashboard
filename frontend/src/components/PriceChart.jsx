@@ -9,7 +9,6 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 
-// Mapowanie period → interval (tak jak w Streamlit)
 const PERIOD_CONFIG = {
   '1d': { interval: '1m', label: '1 day' },
   '5d': { interval: '15m', label: '5 days' },
@@ -21,7 +20,6 @@ const PERIOD_CONFIG = {
   max: { interval: '1mo', label: 'all time' },
 };
 
-// Formatowanie daty zależne od okresu (dla osi X)
 function formatDate(dateStr, period) {
   const date = new Date(dateStr);
 
@@ -37,11 +35,9 @@ function formatDate(dateStr, period) {
   }
 }
 
-// Formatowanie daty dla tooltipa
 function formatTooltipDate(dateStr, period) {
   const date = new Date(dateStr);
 
-  // Dla 1d, 5d, 1mo, 6mo - pokazuj datę z godziną
   if (period === '1d' || period === '5d' || period === '1mo' || period === '6mo') {
     return date.toLocaleString('pl-PL', {
       day: '2-digit',
@@ -51,7 +47,6 @@ function formatTooltipDate(dateStr, period) {
       minute: '2-digit',
     });
   } else {
-    // Dla 1y, 5y, 10y, max - tylko dzień, miesiąc, rok
     return date.toLocaleDateString('pl-PL', {
       day: '2-digit',
       month: '2-digit',
@@ -67,7 +62,6 @@ function PriceChart() {
   const [period, setPeriod] = useState('1d');
   const [error, setError] = useState(null);
 
-  // Funkcja do pobierania pełnych danych wykresu
   const loadChartData = () => {
     setLoading(true);
     const { interval } = PERIOD_CONFIG[period];
@@ -81,13 +75,12 @@ function PriceChart() {
         setError(null);
       })
       .catch((err) => {
-        setError('Nie udało się pobrać historii cen');
+        setError('Failed to retrieve price history');
         console.error(err);
       })
       .finally(() => setLoading(false));
   };
 
-  // Funkcja do pobierania tylko najnowszego punktu
   const fetchLatestPoint = () => {
     const { interval } = PERIOD_CONFIG[period];
     fetchPriceHistory(period, interval)
@@ -97,9 +90,7 @@ function PriceChart() {
         if (!timestamps || !prices || timestamps.length === 0) return;
         const lastTimestamp = timestamps[timestamps.length - 1];
         const lastPrice = prices[prices.length - 1];
-        // Jeśli nie ma jeszcze żadnych danych, nie rób nic
         if (data.length === 0) return;
-        // Jeśli nowy punkt ma inny timestamp niż ostatni na wykresie, dodaj go
         if (lastTimestamp !== data[data.length - 1].date) {
           setData((prevData) => [
             ...prevData,
@@ -108,12 +99,10 @@ function PriceChart() {
         }
       })
       .catch((err) => {
-        // Nie pokazuj błędu na UI, bo to tylko dopytywanie
-        console.error('Błąd przy dopytywaniu najnowszego punktu:', err);
+        console.error('Error while querying the newest point', err);
       });
   };
 
-  // Pobierz dane przy zmianie okresu
   useEffect(() => {
     loadChartData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -131,11 +120,11 @@ function PriceChart() {
   return (
     <div className="chart-container">
 
-      {/* Wykres */}
+      {/* Chart */}
       {error ? (
         <div className="chart-error">{error}</div>
       ) : loading ? (
-        <div className="chart-loading">Ładowanie wykresu...</div>
+        <div className="chart-loading">Chart loading...</div>
       ) : (
         <ResponsiveContainer width="100%" height={400}>
           <AreaChart data={data}>
@@ -179,7 +168,6 @@ function PriceChart() {
               strokeWidth={2}
               fill="url(#blueGradient)"
               dot={(props) => {
-                // Pokaż kropkę tylko na ostatnim punkcie (real-time)
                 const { index, cx, cy, payload } = props;
                 if (index === data.length - 1) {
                   const price = payload.price;
@@ -195,7 +183,7 @@ function PriceChart() {
                         stroke="#fff"
                         strokeWidth={2}
                       />
-                      {/* Kwadracik z ceną */}
+                      {/* square with price */}
                       <rect
                         x={cx + 10}
                         y={cy - 12}
@@ -225,7 +213,7 @@ function PriceChart() {
         </ResponsiveContainer>
       )}
 
-      {/* Przyciski wyboru okresu - pod wykresem */}
+      {/* choose buttons (under the chart)*/}
       <div className="period-selector">
         {Object.entries(PERIOD_CONFIG).map(([key, config]) => (
           <button
