@@ -1,32 +1,32 @@
 # 🪙 Crypto Dashboard
 
-Intuicyjna aplikacja webowa do śledzenia cen Bitcoina w czasie rzeczywistym, analizy trendów rynkowych oraz konsultacji AI dotyczących kryptowalut.
+An intuitive web application for real-time Bitcoin price tracking, market trend analysis, and AI-powered cryptocurrency consultations.
 
 ---
 
-## ✨ Funkcje
+## ✨ Features
 
-- **Śledzenie cen na żywo:** Monitoruj kurs Bitcoina w czasie rzeczywistym.
-- **Analiza rynku:** Interaktywne wykresy prezentujące historyczne zmiany cen.
-- **Najnowsze wiadomości:** Bądź na bieżąco z najważniejszymi newsami ze świata kryptowalut.
-- **AI Chatbot:** Inteligentny asystent odpowiadający na pytania dotyczące rynku krypto (OpenAI).
-
----
-
-## 🛠️ Stos technologiczny
-
-| Warstwa      | Technologia                        |
-|:------------ |:-----------------------------------|
-| Frontend     | React, Vite, CSS Modules           |
-| Backend      | Python, FastAPI (Uvicorn)          |
-| AI           | OpenAI API                         |
-| Dane         | Real-time Crypto APIs              |
+- **Live price tracking:** Monitor Bitcoin prices in real time.
+- **Market analysis:** Interactive charts showing historical price changes.
+- **Latest news:** Stay up to date with the most important news from the crypto world.
+- **AI Chatbot:** Intelligent assistant answering questions about the crypto market (OpenAI).
 
 ---
 
-## 🚀 Szybki start
+## 🛠️ Technology Stack
 
-### 1. Klonowanie repozytorium
+| Layer        | Technology                        |
+|:------------ |:----------------------------------|
+| Frontend     | React, Vite, CSS Modules          |
+| Backend      | Python, FastAPI (Uvicorn)         |
+| AI           | OpenAI API                        |
+| Data         | Real-time Crypto APIs             |
+
+---
+
+## 🚀 Quick Start
+
+### 1. Clone the repository
 ```bash
 git clone https://github.com/michalkaluzny/crypto-dashboard.git
 cd crypto-dashboard
@@ -34,68 +34,68 @@ cd crypto-dashboard
 
 ### 2. Backend
 
-W nowym terminalu:
+In a new terminal:
 
 ```bash
 cd backend
 ```
 
-Instalacja zależności:
+Install dependencies:
 ```bash
 pip install -r requirements.txt
 ```
 
-Konfiguracja klucza API:
+API key configuration:
 
-Utwórz plik `.env` w folderze `backend` i dodaj swój klucz OpenAI:
+Create a `.env` file in the `backend` folder and add your OpenAI key:
 ```env
 OPENAI_API_KEY=your_actual_api_key_here
 ```
 
-Uruchom serwer:
+Run the server:
 ```bash
 uvicorn main:app --reload
 ```
 
 ### 3. Frontend
 
-W osobnym terminalu:
+In a separate terminal:
 
 ```bash
 cd frontend
 ```
 
-Instalacja zależności:
+Install dependencies:
 ```bash
 npm install
 ```
 
-Start aplikacji:
+Start the application:
 ```bash
 npm run dev
 ```
 
-Aplikacja będzie dostępna pod adresem (domyślnie): [http://localhost:5173](http://localhost:5173)
+The app will be available at (by default): [http://localhost:5173](http://localhost:5173)
 
 ---
 
-## 📸 Zrzuty ekranu
+## 📸 Screenshots
 
 - **Dashboard**
   ![Dashboard](images/AppScreenMain.png)
-- **Wiadomości rynkowe**
+- **Market news**
   ![News](images/AppScreenNews.png)
-- **Interfejs Chatbota**
+- **Chatbot interface**
   ![Chatbot](images/AppScreenChatBot.png)
 
 ---
 
-## 📝 Licencja
+## 📝 License
 
-Brak jawnie określonej licencji. Jeśli chcesz użyć tego projektu, skontaktuj się z autorem.
+No explicit license specified. If you want to use this project, please contact the author.
 
 ---
 
-## 👤 Kontakt
+## 👤 Contact
 
 Michał Kałużny – [GitHub Profile](https://github.com/michalkaluzny)
