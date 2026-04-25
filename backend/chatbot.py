@@ -10,12 +10,9 @@ def get_ai_response(text : str) -> str:
     :param text: text to be analyzed
     :return: AI response
     """
+    system_prompt = """You are an expert in cryptocurrencies and blockchain technology. Your goal is to explain complex technical concepts in a clear, concise, and simple way. Always base your answers on facts and up-to-date information. Under no circumstances should you provide investment or financial advice. If the user asks for market forecasts or opinions, you must explicitly state that these are only estimates and do not constitute professional financial recommendations."""
     messages = [
-            {"role": "system", "content": "Jesteś ekspertem od kryptowalut i technologii blockchain. Odpowiadaj po polsku, "
-                                          "jasno i zwięźle, tłumacząc nawet trudne pojęcia w prosty sposób. Podawaj aktualne "
-                                          "informacje, bazuj na faktach i w żadnym wypadku nie udzielaj porad inwestycyjnych. Jeśli użytkownik"
-                                          " pyta o prognozy lub opinie, zaznacz, że są to tylko szacunki i nie stanowią "
-                                          "rekomendacji."}
+            {"role": "system", "content": system_prompt}
 ,
             {"role": "user", "content": text}
     ]
