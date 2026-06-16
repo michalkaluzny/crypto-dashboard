@@ -38,13 +38,12 @@ def get_btc_price_data():
     return {
         'price': price,
         'percentage_diff': percentage_diff,
-        'prev_close_price': prev_close_price,
         'diff': diff,
     }
 
 def get_btc_news(count : int = 1):
     '''
-    Gets the 3 latest bitcoin news headlines.
+    Gets the news data from the Yahoo Finance API.
 
     :param count: int: Number of news to get.
     :return: As many news items as given in the count along with the publication date.
@@ -54,7 +53,7 @@ def get_btc_news(count : int = 1):
 
         news = btc.get_news(count=count)
         results =  []
-        for i, new in enumerate(news[:count]):
+        for new in news[:count]:
             url = new["content"]['canonicalUrl']['url']
             title = new['content']['title']
             pub_date = new["content"]['pubDate']
