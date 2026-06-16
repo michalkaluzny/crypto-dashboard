@@ -13,8 +13,8 @@ def get_close_price_history(period, interval):
         btc = yf.Ticker("BTC-USD")
         hist = btc.history(period=period, interval=interval)
         return hist['Close']
-    except Exception as e:
-        logger.exception(f"Error fetching BTC price history")
+    except Exception:
+        logger.exception("Error fetching BTC price history")
         raise
 
 def get_btc_price_data():
@@ -25,16 +25,20 @@ def get_btc_price_data():
         if price is None:
             price = btc.history(period="1d", interval="1h")
             price = price["Close"].iloc[-1]
-    except Exception as e:
-        logger.exception(f"Error fetching Bitcoin price data")
+    except Exception:
+        logger.exception("Error fetching Bitcoin price data")
         raise
 
     try:
         prev_close_price = info.get('previousClose')
+
+        if not prev_close_price:
+            raise ValueError("Invalid previousClose from Yahoo Finance (None or 0)")
+
         diff = price - prev_close_price
         percentage_diff = (diff / prev_close_price) * 100
-    except Exception as e:
-        logger.exception(f"Error fetching Bitcoin price difference")
+    except Exception:
+        logger.exception("Error computing Bitcoin price difference")
         raise
 
     return {
@@ -63,8 +67,8 @@ def get_btc_news(count : int = 1):
             pub_date = change_date_type(pub_date)
             results.append([pub_date, {'title': title, 'summary' : summary, 'url' : url}])
         return results
-    except Exception as e:
-        logger.exception(f"Error fetching news")
+    except Exception:
+        logger.exception("Error fetching news")
         raise
 
 def change_date_type(date):
@@ -78,8 +82,8 @@ def change_date_type(date):
         date_utc = datetime.fromisoformat(date.replace('Z', '+00:00'))
         changed_date = date_utc.strftime('%d.%m.%Y %H:%M:%S')
         return changed_date
-    except Exception as e:
-        logger.exception(f"Error converting date")
+    except Exception:
+        logger.exception("Error converting date")
         raise
 
 
