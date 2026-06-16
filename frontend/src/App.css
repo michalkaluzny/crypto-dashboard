@@ -307,6 +307,13 @@ body {
   min-height: 520px;
 }
 
+.chatbot-modern-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
 .chatbot-modern-title {
   color: #1976d2;
   font-weight: 800;
@@ -315,6 +322,24 @@ body {
   text-align: center;
   margin: 0;
   padding: 32px 0 18px 0;
+}
+
+.chatbot-modern-clear {
+  position: absolute;
+  right: 0;
+  bottom: 18px;
+  background: transparent;
+  color: #1976d2;
+  border: 1.5px solid #e3eafc;
+  border-radius: 8px;
+  padding: 6px 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.chatbot-modern-clear:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .chatbot-modern-messages {

@@ -6,9 +6,6 @@ class Price(BaseModel):
     diff : float
     percentage_diff: float
 
-    class Config:
-        arbitrary_types_allowed = True
-
 class PriceHistory(BaseModel):
     timestamps: List[str]
     prices: List[float]

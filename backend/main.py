@@ -9,6 +9,7 @@ from catching_info import(
 from typing import List
 from chatbot import get_ai_response
 import logging
+import os
 
 logging.basicConfig(
       level=logging.INFO,
@@ -17,10 +18,10 @@ logging.basicConfig(
 
 app = FastAPI()
 
-origins = [
-    "http://localhost:5173",
-    "http://127.0.0.1:5173",
-]
+origins = os.getenv(
+    "CORS_ORIGINS",
+    "http://localhost:5173,http://127.0.0.1:5173",
+).split(",")
 
 app.add_middleware(
     CORSMiddleware,

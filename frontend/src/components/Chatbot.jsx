@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { sendChatMessage } from "../api/client";
 
 import "../App.css";
 
@@ -22,27 +23,33 @@ function Chatbot() {
   const sendMessage = async () => {
     if (!input.trim()) return;
     setLoading(true);
-    setMessages((msgs) => [...msgs, { role: "user", content: input }]);
+    setMessages((msgs) => [
+      ...msgs,
+      { id: crypto.randomUUID(), role: "user", content: input },
+    ]);
     try {
-      const res = await fetch("http://localhost:8000/chatbot", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text: input }),
-      });
-      if (!res.ok) throw new Error("Serwer error");
-      const data = await res.json();
+      const res = await sendChatMessage(input);
       setMessages((msgs) => [
         ...msgs,
-        { role: "ai", content: data.answer }
+        { id: crypto.randomUUID(), role: "ai", content: res.data.answer },
       ]);
-    } catch (e) {
+    } catch {
       setMessages((msgs) => [
         ...msgs,
-        { role: "ai", content: "An error occurred while communicating with the AI." }
+        {
+          id: crypto.randomUUID(),
+          role: "ai",
+          content: "An error occurred while communicating with the AI.",
+        },
       ]);
     }
     setInput("");
     setLoading(false);
+  };
+
+  const clearChat = () => {
+    setMessages([]);
+    localStorage.removeItem("chatbotMessages");
   };
 
   const handleKeyDown = (e) => {
@@ -53,16 +60,27 @@ function Chatbot() {
 
   return (
     <div className="chatbot-modern-container">
-      <h2 className="chatbot-modern-title">Chatbot AI</h2>
+      <div className="chatbot-modern-header">
+        <h2 className="chatbot-modern-title">Chatbot AI</h2>
+        {messages.length > 0 && (
+          <button
+            onClick={clearChat}
+            disabled={loading}
+            className="chatbot-modern-clear"
+          >
+            Clear
+          </button>
+        )}
+      </div>
       <div className="chatbot-modern-messages">
         {messages.length === 0 && (
           <div className="chatbot-modern-placeholder">
             Ask a question about cryptocurrencies…
           </div>
         )}
-        {messages.map((msg, idx) => (
+        {messages.map((msg) => (
           <div
-            key={idx}
+            key={msg.id}
             className={`chatbot-modern-row ${msg.role === "user" ? "user" : "ai"}`}
           >
             <div className="chatbot-modern-avatar">

@@ -44,8 +44,8 @@ function NewsList() {
     <div className="news-list">
       <h2 className="news-list-title">News</h2>
       <div className="news-scroll-box">
-        {news.map((item, index) => (
-          <NewsCard key={index} news={item} />
+        {news.map((item) => (
+          <NewsCard key={item.url} news={item} />
         ))}
       </div>
     </div>

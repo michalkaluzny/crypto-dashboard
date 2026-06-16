@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { fetchPriceHistory } from '../api/client';
 import {
   AreaChart,
@@ -62,6 +62,12 @@ function PriceChart() {
   const [period, setPeriod] = useState('1d');
   const [error, setError] = useState(null);
 
+  // Holds the latest data without forcing the polling effect to re-run.
+  const dataRef = useRef(data);
+  useEffect(() => {
+    dataRef.current = data;
+  }, [data]);
+
   const loadChartData = () => {
     setLoading(true);
     const { interval } = PERIOD_CONFIG[period];
@@ -90,8 +96,9 @@ function PriceChart() {
         if (!timestamps || !prices || timestamps.length === 0) return;
         const lastTimestamp = timestamps[timestamps.length - 1];
         const lastPrice = prices[prices.length - 1];
-        if (data.length === 0) return;
-        if (lastTimestamp !== data[data.length - 1].date) {
+        const currentData = dataRef.current;
+        if (currentData.length === 0) return;
+        if (lastTimestamp !== currentData[currentData.length - 1].date) {
           setData((prevData) => [
             ...prevData,
             { date: lastTimestamp, price: lastPrice },
@@ -108,14 +115,14 @@ function PriceChart() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [period]);
 
-  // Co 10 sekund dopytuj o najnowszy punkt i dorysuj, jeśli jest nowy
+  // Every 10s poll for the newest point and append it if it's new.
   useEffect(() => {
     const intervalId = setInterval(() => {
       fetchLatestPoint();
-    }, 10000); // 10 sekund
+    }, 10000);
     return () => clearInterval(intervalId);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [period, data]);
+  }, [period]);
 
   return (
     <div className="chart-container">
