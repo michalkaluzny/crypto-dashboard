@@ -1,6 +1,8 @@
 import yfinance as yf
 from datetime import datetime
+import logging
 
+logger = logging.getLogger(__name__)
 def get_close_price_history(period, interval):
     '''
     Gets the historical price data from the Yahoo Finance API.
@@ -12,7 +14,7 @@ def get_close_price_history(period, interval):
         hist = btc.history(period=period, interval=interval)
         return hist['Close']
     except Exception as e:
-        print(f"Error fetching BTC price history: {e}")
+        logger.exception(f"Error fetching BTC price history")
         raise
 
 def get_btc_price_data():
@@ -24,7 +26,7 @@ def get_btc_price_data():
             price = btc.history(period="1d", interval="1h")
             price = price["Close"].iloc[-1]
     except Exception as e:
-        print(f"Error fetching Bitcoin price data: {e}")
+        logger.exception(f"Error fetching Bitcoin price data")
         raise
 
     try:
@@ -32,7 +34,7 @@ def get_btc_price_data():
         diff = price - prev_close_price
         percentage_diff = (diff / prev_close_price) * 100
     except Exception as e:
-        print(f"Error fetching Bitcoin price difference: {e}")
+        logger.exception(f"Error fetching Bitcoin price difference")
         raise
 
     return {
@@ -62,7 +64,7 @@ def get_btc_news(count : int = 1):
             results.append([pub_date, {'title': title, 'summary' : summary, 'url' : url}])
         return results
     except Exception as e:
-        print(f"Error fetching news: {e}")
+        logger.exception(f"Error fetching news")
         raise
 
 def change_date_type(date):
@@ -77,7 +79,7 @@ def change_date_type(date):
         changed_date = date_utc.strftime('%d.%m.%Y %H:%M:%S')
         return changed_date
     except Exception as e:
-        print(f"Error converting date: {e}")
+        logger.exception(f"Error converting date")
         raise
 
 

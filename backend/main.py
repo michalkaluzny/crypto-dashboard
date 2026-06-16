@@ -8,7 +8,12 @@ from catching_info import(
 )
 from typing import List
 from chatbot import get_ai_response
+import logging
 
+logging.basicConfig(
+      level=logging.INFO,
+      format="%(asctime)s %(name)s %(levelname)s %(message)s",
+)
 
 app = FastAPI()
 
