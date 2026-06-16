@@ -2,11 +2,9 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from schemas import Price, News, PriceHistory, ChatBot, ChatRequest
 from catching_info import(
-    get_btc_price,
     get_btc_news,
     get_close_price_history,
-    get_price_change_since_last_close,
-    get_percentage_price_change_since_last_close,
+    get_btc_price_data
 )
 from typing import List
 from chatbot import get_ai_response
@@ -35,10 +33,11 @@ def read_price():
     :return: object Price with actual price, difference and percentage difference
     """
     try:
+        data = get_btc_price_data()
         return Price(
-            price=get_btc_price(),
-            diff = get_price_change_since_last_close(),
-            percentage_diff=get_percentage_price_change_since_last_close(),
+            price=data['price'],
+            diff = data['diff'],
+            percentage_diff=data['percentage_diff'],
         )
     except Exception as e:
         raise HTTPException(status_code=503, detail=f"Could not fetch price: {str(e)}")

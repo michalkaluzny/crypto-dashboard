@@ -1,23 +1,6 @@
 import yfinance as yf
 from datetime import datetime
 
-def get_btc_price():
-    '''
-    Gets the current bitcoin price from the Yahoo Finance API.
-
-    :return: float: Actual Bitcoin price.
-    '''
-    try:
-        btc = yf.Ticker("BTC-USD")
-        data = btc.fast_info.get('lastPrice')
-        if data is None:
-            data = btc.history(period="1d", interval="1m")
-            return data["Close"].iloc[-1]
-        return data
-    except Exception as e:
-        print(f"Error fetching BTC price: {e}")
-        raise
-
 def get_close_price_history(period, interval):
     '''
     Gets the historical price data from the Yahoo Finance API.
@@ -32,40 +15,32 @@ def get_close_price_history(period, interval):
         print(f"Error fetching BTC price history: {e}")
         raise
 
-def get_price_change_since_last_close():
-    '''
-    It takes the current Bitcoin price and the previous close price of Bitcoin
-    and calculates the difference.
-
-    :return: float: the difference between the current and previous closing price of Bitcoin.
-    '''
+def get_btc_price_data():
+    btc = yf.Ticker("BTC-USD")
+    info = btc.fast_info
     try:
-        current_price = get_btc_price()
-        btc = yf.Ticker("BTC-USD")
-        prev_close_price = btc.fast_info.get('previousClose')
-        diff = current_price - prev_close_price
-        return diff
+        price = info.get('lastPrice')
+        if price is None:
+            price = btc.history(period="1d", interval="1h")
+            price = price["Close"].iloc[-1]
+    except Exception as e:
+        print(f"Error fetching Bitcoin price data: {e}")
+        raise
+
+    try:
+        prev_close_price = info.get('previousClose')
+        diff = price - prev_close_price
+        percentage_diff = (diff / prev_close_price) * 100
     except Exception as e:
         print(f"Error fetching Bitcoin price difference: {e}")
         raise
 
-def get_percentage_price_change_since_last_close():
-    '''
-    Shows the difference between the current price and the previous close price of bitcoin in percentage.
-
-    :return: float: the difference between the current price and the previous close price of bitcoin in percentage.
-    '''
-    try:
-        diff = get_price_change_since_last_close()
-        btc = yf.Ticker("BTC-USD")
-        prev_close_price = btc.fast_info.get('previousClose')
-        percentage_diff = (diff / prev_close_price) * 100
-        return percentage_diff
-    except Exception as e:
-        print(f"Error fetching Bitcoin percentage price difference: {e}")
-        raise
-
-
+    return {
+        'price': price,
+        'percentage_diff': percentage_diff,
+        'prev_close_price': prev_close_price,
+        'diff': diff,
+    }
 
 def get_btc_news(count : int = 1):
     '''
